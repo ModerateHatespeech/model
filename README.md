@@ -34,3 +34,5 @@ print(tf.nn.softmax(logits.logits, axis=1).numpy())
 
 ## Training
 Information on our training process can be found on our [website](https://moderatehatespeech.com/framework/)
+
+Or see train.ipynb
