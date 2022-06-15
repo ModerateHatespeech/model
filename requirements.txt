@@ -10,6 +10,6 @@ pandas-profiling==1.4.1
 pandocfilters==1.5.0
 tokenizers==0.10.3
 transformers==4.15.0
-tensorflow==2.7.0
+tensorflow==2.7.2
 # cloud-tpu-client # for TPU training
 # tensorflow-gcs-config==2.7.0 # for TPU training
