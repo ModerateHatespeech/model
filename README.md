@@ -4,6 +4,12 @@ In the interest of research and contribution into the performance of our languag
 ## License
 All models are licensed under the GPL-v3 license, and released on an as-is basis. We make no guarantee of the accuracy or performance of these models, and you implement them under the expectation that these models can potentially contain biases as a result of the training process.
 
+## Download
+
+```bash
+wget https://moderatehatespeech.com/research/models/model_v7.h5 -O model_v7.h5
+```
+
 ## Usage
 The following weights are provided as TF weights. You should install requirements via:
 ```pip3 install -r requirements.txt``` 
