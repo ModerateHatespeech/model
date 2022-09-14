@@ -1,15 +1,5 @@
-huggingface-hub==0.2.1
-keras==2.7.0
-Keras-Preprocessing==1.1.2
-keras-vis==0.4.1
-numpy==1.21.0
-pandas==1.1.5
-pandas-datareader==0.9.0
-pandas-gbq==0.13.3
-pandas-profiling==1.4.1
-pandocfilters==1.5.0
-tokenizers==0.10.3
 transformers==4.15.0
-tensorflow==2.7.2
-# cloud-tpu-client # for TPU training
-# tensorflow-gcs-config==2.7.0 # for TPU training
+torch 
+numpy
+pandas
+fastai==1.0.61

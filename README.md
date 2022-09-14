@@ -7,32 +7,25 @@ All models are licensed under the GPL-v3 license, and released on an as-is basis
 ## Download
 
 ```bash
-wget https://moderatehatespeech.com/research/models/model_v7.h5 -O model_v7.h5
+wget https://moderatehatespeech.com/research/models/pyt_v2.pkl -O pyt_v2.pkl
 ```
 
 ## Usage
-The following weights are provided as TF weights. You should install requirements via:
+The following weights are provided as FastAI (Pytorch) pickled weights. You should install requirements via:
 ```pip3 install -r requirements.txt``` 
-To load the model, import the necessary classes and load the model weights:
+To load the model, import the necessary classes from the mhs_imports.py file and load the model:
 ```python
-from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
-import tensorflow as tf
+from mhs_imports import *
 
-model = TFAutoModelForSequenceClassification.from_pretrained("roberta-large")
-tokenizer = AutoTokenizer.from_pretrained('roberta-large')
-
-model.load_weights("model_v7.h5")
+model = load_learner("./", "pyt_v2.pkl")
 ```
 
-To run a inference, you can use the default tokenizer:
+To run a inference:
 
 ```python
-tokens = tokenizer(string, padding=True,truncation=True, return_tensors='tf', max_length=256)
-logits=model.predict(dict(tokens))
-print(tf.nn.softmax(logits.logits, axis=1).numpy())
+model.predict("Testing, 123")
 ```
 
 ## Training
 Information on our training process can be found on our [website](https://moderatehatespeech.com/framework/)
 
-Or see train.ipynb
