@@ -3,3 +3,4 @@ torch
 numpy
 pandas
 fastai==1.0.61
+unidecode
