@@ -7,7 +7,7 @@ All models are licensed under the GPL-v3 license, and released on an as-is basis
 ## Download
 
 ```bash
-wget https://moderatehatespeech.com/research/models/pyt_v2.pkl -O pyt_v2.pkl
+wget https://moderatehatespeech.com/research/models/pyt_v2.pkl -O production.pkl
 ```
 
 ## Usage
@@ -16,8 +16,7 @@ The following weights are provided as FastAI (Pytorch) pickled weights. You shou
 To load the model, import the necessary classes from the mhs_imports.py file and load the model:
 ```python
 from mhs_imports import *
-
-model = load_learner("./", "pyt_v2.pkl")
+model = MHSPredictor("production.pkl")
 ```
 
 To run a inference:
