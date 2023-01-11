@@ -12,6 +12,11 @@ from transformers import RobertaForSequenceClassification, RobertaTokenizer, Rob
 import pandas as pd
 import numpy as np
 
+from unidecode import unidecode
+import re
+
+transformer_tokenizer = RobertaTokenizer.from_pretrained("roberta-large")
+
 # Adapted from: https://www.kaggle.com/code/maroberti/fastai-with-transformers-bert-roberta/notebook
 # Define model wrapper for FAI learner
 class CustomTransformerModel(nn.Module):
@@ -25,7 +30,7 @@ class CustomTransformerModel(nn.Module):
         # Mask to avoid performing attention on padding token indices.
         # Mask values selected in ``[0, 1]``:
         # ``1`` for tokens that are NOT MASKED, ``0`` for MASKED tokens.
-        attention_mask = (input_ids != pad_idx).type(input_ids.type()) 
+        attention_mask = (input_ids != transformer_tokenizer.pad_token_id).type(input_ids.type()) 
         logits = self.transformer(input_ids,
                                   attention_mask = attention_mask)[0]   
         return logits
@@ -66,15 +71,26 @@ class TransformersBaseTokenizer(BaseTokenizer):
     def tokenizer(self, t:str) -> List[str]:
         CLS = self._pretrained_tokenizer.cls_token
         SEP = self._pretrained_tokenizer.sep_token
-        tokens = self._pretrained_tokenizer.tokenize(t, add_prefix_space=True)[:self.max_seq_len - 2]
+        tokens = self._pretrained_tokenizer.tokenize(t)[:self.max_seq_len - 2]
         tokens = [CLS] + tokens + [SEP]
         return tokens
 
-# Initialize vocab from RobertaLarge
-# The following must be defined for inference to work
-transformer_tokenizer = RobertaTokenizer.from_pretrained("roberta-large")
-transformer_base_tokenizer = TransformersBaseTokenizer(pretrained_tokenizer = transformer_tokenizer, model_type = model_type)
-fastai_tokenizer = Tokenizer(tok_func = transformer_base_tokenizer, pre_rules=[], post_rules=[])
+# Initialize predictor from loaded model
+class MHSPredictor:
+  
+  def __init__(self, model_path: str = "production.pkl"):
+    transformer_base_tokenizer = TransformersBaseTokenizer(pretrained_tokenizer = transformer_tokenizer, model_type = model_type)
+    fastai_tokenizer = Tokenizer(tok_func = transformer_base_tokenizer, pre_rules=[], post_rules=[])
+    self.model = load_learner("", model_path)
+    
+  def predict(self, text: str):
+    return self.model.predict(self.__preprocess(text))
+                              
+  def __preprocess(self, text: str):
+    # preprocessing routines
+    text = re.sub(r'@[^ ]+', '@USER', text)
+    text = re.sub(r'(?:\n|\r)', ' ', text)
+    text = re.sub(r" +", ' ', text)
+    text = re.sub('(?: $|^ )', '', text)
+    return unidecode(text)
 
-pad_first = False
-pad_idx = transformer_tokenizer.pad_token_id
