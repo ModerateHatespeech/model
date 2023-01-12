@@ -89,6 +89,7 @@ class MHSPredictor:
   def __preprocess(self, text: str):
     # preprocessing routines
     text = re.sub(r'@[^ ]+', '@USER', text)
+    text = re.sub(r'https?:\/\/[^ ]+', '<HTTP>', text)
     text = re.sub(r'(?:\n|\r)', ' ', text)
     text = re.sub(r" +", ' ', text)
     text = re.sub('(?: $|^ )', '', text)
