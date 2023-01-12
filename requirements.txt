@@ -4,3 +4,4 @@ numpy
 pandas
 fastai==1.0.61
 unidecode
+regex==2022.10.31
